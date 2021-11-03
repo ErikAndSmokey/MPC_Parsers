@@ -1,0 +1,108 @@
+\ Progressive Ratio Food Training Program
+\ Written by: Erik Van Newenhizen
+\ Date: 11.1.21
+\ Edited by: Smokey
+\ Contributions: Bethany, somewhat.
+
+
+\This section is for Inputs
+
+^LeftLeverPress = 1
+^RightLeverPress = 3
+
+\This section is for Outputs
+^LeftLeverExtend = 2
+^LeftCueLight = 5
+^RightLeverExtend = 3
+^House = 8
+^Reward = 4
+
+
+\ Defined Variables
+\ A = Left lever responses (correct)
+\ B = Right lever responses (incorrect)
+\ C = Array for marking  lever press times
+\ D = Using this to move across the C array and keep track of presses
+\ E = PR increment list
+\ F = Position in PR increment list
+\ G = Responses required for reward
+\ H = Time since completion of last PR increment
+\ I = Time until forced shut off
+\ J = Timestamp for each left lever press (correct)
+\ K = Move across correct timestamp array
+\ L = Timestamp for each right lever press (incorrect)
+\ O = Move across incorrect timestamp array
+\ M = Session Minutes Max
+\ N = Session Timer
+\ X =
+\ T = Session Time increment
+
+
+DIM C = 100000
+DIM J = 100000
+DIM L = 100000
+
+LIST E = 1,2,4,6,9,12,15,20,25,32,40,50,62,77,95,118,145,178,219,268,328,402,492,603,737,901,1102,1347,1646,2012 \PR increment; see Richardson and Roberts 1996
+
+\-------------------------------------------------------------------------------------
+S.S.1, \The initiation signal and setting logic
+
+S1,
+#START: SET M = 780; SET A = 0; SET G = E(F); SET D = 0 ---> S2
+
+S2,
+1": ON ^LeftLeverExtend, ^LeftCueLight, ^RightLeverExtend ---> S3
+
+S3,
+G#R^LeftLeverPress: Z1; ON ^Reward; OFF ^LeftCueLight, ^LeftLeverExtend, ^RightLever Extend; SET C(D) = T; ADD D; SET C(D) = -987.987; ADD F; IF F >= 30 [@T,@F]
+        @T: Z2 ---> SX
+        @F: ---> S4
+1800": Z2 ---> SX \ If they do not meet the lever press requirements within this amount of time....they fail
+
+S4,
+0.1": OFF ^Reward; ON ^House; SET G = E(F); SHOW 5, CURRENT INCREMENT, G ---> S5
+
+S5,
+5": OFF ^House; ON ^LeftLeverExtend, ^LeftCueLight, ^RightLeverExtend ---> S3
+
+\--------------------------------------------------------------------------------------
+S.S.2, \ Show timer and create time limit
+S1,
+#START:---> S2
+
+S2,
+0.1": SHOW 1, MIN, T/60;
+IF T/60 >= M [@T, @F]
+    @T: Z2 ---> SX
+    @F: ---> SX
+
+\---------------------------------------------------------------------------------------
+S.S.3, \ Start time increment, add to C on lever press, seal array for tracking lever press times
+S1,
+#START: SET T = 0 ---> S2
+
+S2,
+0.1": SET T = T+0.1; SHOW 4, TIME SECONDS, T ---> S2
+
+
+
+\---------------------------------------------------------------------------------------
+S.S.4, \ Show left lever responses, add to A, and check if criteria met
+S1,
+#START:---> S2
+
+S2,
+0.1": SHOW 2, CORRECT RESPONSES, A; SHOW 3, INCORRECT RESPONSES, B; SET K = 0; SET O = 0 ---> S3
+
+S3,
+#R^LeftLeverPress: ADD A; SHOW 2, CORRECT RESPONSES, A; SET J(K) = T; ADD K; SET J(K) = -987.987 ---> S3
+#R^RightLeverPress: ADD B; SHOW 3, INCORRECT RESPONSES, B; SET L(O) = T; ADD O; SET L(O) = -987.987 ---> S3
+
+
+\-------------------------------------------------------------------------------------
+S.S.5, \ THIS IS THE TERMINATION SIGNAL IF THEY DO NOT COMPLETE WITHIN THE ALLOTTED TIME
+S1,
+#Z2: ---> S2
+
+S2,
+0.1": OFF ^LeftLeverExtend, ^House, ^Reward, ^LeftCueLight; SET L(O) = -987.987; SET J(K) = -987.987; SET C(D) = -987.987 ---> STOPABORTFLUSH

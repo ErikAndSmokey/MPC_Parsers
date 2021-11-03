@@ -1,0 +1,98 @@
+\ Progressive Ratio Food Training Program
+\ Written by: Erik Van Newenhizen
+\ Edited by: Smokey
+\ Contributions: Bethany, somewhat.
+
+
+
+
+\This is FR1
+
+\This section is for Inputs
+
+^LeftLeverPress = 1
+^RightLeverPress = 3
+
+\This section is for Outputs
+^LeftLeverExtend = 2
+^LeftCueLight = 5
+^RightLeverExtend = 3
+^House = 8
+^Reward = 4
+
+
+\ Defined Variables
+\ A = left lever responses
+\ B = MAX presses an animal can achieve within the session (will be 100 in this code)
+\ C = array for marking  lever press times
+\ D = using this to move across the C array and keep track of presses
+\ M = minutes
+\ N = timer
+\ X = fixed ratio (will be 1 in this code)
+\ T = time increment
+
+
+DIM C= 105
+
+\-------------------------------------------------------------------------------------
+S.S.1, \The initiation signal and setting FR1 logic
+
+S1,
+#START: SET X = 1; SET M = 120; SET A = 0; SET B = 100 ---> S2
+
+S2,
+0.1": ON ^LeftLeverExtend, ^House, ^LeftCueLight ---> S3
+
+S3,
+X#R^LeftLeverPress: Z1; ON ^Reward; SET C(D) = T; ADD D; SET C(D) = -987.987 ---> S4
+
+S4,
+0.1": OFF ^Reward ---> S3
+
+
+
+
+\--------------------------------------------------------------------------------------
+S.S.2, \ Show timer and create time limit
+S1,
+#START:---> S2
+
+S2,
+0.1": SHOW 1, MIN, T/60;
+IF T/60 >= M [@T, @F]
+    @T: ---> S3
+    @F: ---> SX
+S3,
+1": OFF ^LeftLeverExtend, ^House, ^Reward, ^LeftCueLight ---> STOPABORTFLUSH
+
+
+
+
+\---------------------------------------------------------------------------------------
+S.S.3, \ Show left lever responses, add to A, and check if criteria met
+S1,
+#START:---> S2
+
+S2,
+0.1": SHOW 2, RESPONSES, A ---> S3
+
+S3,
+#Z1: ADD A; SHOW 2, RESPONSES, A ---> S4
+
+S4,
+0.1": IF A >= B [@T, @F]
+    @T: ---> S5
+    @F: ---> S3
+S5,
+1": OFF ^LeftLeverExtend, ^House, ^Reward, ^LeftCueLight ---> STOPABORTFLUSH
+
+
+
+
+\---------------------------------------------------------------------------------------
+S.S.4, \ Start time increment, add to C on lever press, seal array for tracking lever press times
+S1,
+#START: SET T = 0; SET D = 0 ---> S2
+
+S2,
+0.1": SET T = T+0.1; SHOW 4, TIME SECONDS, T ---> S2
