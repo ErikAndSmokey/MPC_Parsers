@@ -1,4 +1,5 @@
 **Welcome to the Attentional Set Shift Parser folder!**
+
 **Here's how to use the parser:**
 
 1) Download the .py files, .bat files, and 'Group Identifier.xlsx'
@@ -17,6 +18,7 @@
 
 
 **AS FOR THE MPCs**
+
 This code ***ONLY*** works if you use the accompanying MPCs. This program is designed to read the MPC MSNs, thus you will have to use the same naming conventions as are used here.
 
 *For clarity*
