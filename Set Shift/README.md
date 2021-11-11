@@ -4,7 +4,7 @@
 
 1) Download the .py files, .bat files, and 'Group Identifier.xlsx'
 
-2) Put all three files in the same root folder (ex. 'C:\\Users\\JoeSchmo\\Desktop\\Stop Signal')
+2) Put all the parser files in the same root folder (ex. 'C:\\Users\\JoeSchmo\\Desktop\\Set Shift')
 
 3) Run the .bat file ('Make Folders') by double-clicking. This will create the folders in the directory that are necessary for the program.
    
