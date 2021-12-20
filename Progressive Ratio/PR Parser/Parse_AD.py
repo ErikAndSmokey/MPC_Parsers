@@ -1,0 +1,4 @@
+import prparseralldays
+
+
+prparseralldays.parse()
