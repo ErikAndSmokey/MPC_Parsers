@@ -14,7 +14,7 @@ from shutil import copyfile
 #Grab the directory that the script is located in.. create any other file paths here
 main_folder = os.getcwd()
 path_to_data = main_folder + '\\Data\\'
-path_to_save = main_folder + '\\XL FILES\\'
+path_to_save = main_folder + '\\XL Files\\'
 path_to_figures = main_folder + '\\Figures\\'
 
 
