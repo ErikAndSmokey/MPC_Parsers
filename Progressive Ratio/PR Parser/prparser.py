@@ -343,7 +343,7 @@ def parse():
 
 
 
-        elif 'test' in msn_check.lower():
+        else:
             test_main_info = MainInfoParser(file,test_dates,test_starttimes,test_subjects,test_msns,test_experiments)
             test_main_info.maininfograbber()
 
@@ -424,8 +424,6 @@ def parse():
                     itrr.append(available_increments[i]/((trial_timestamps[i] -trial_timestamps[i-1] - 10)/60))
             all_itrr.append(itrr)
 
-        else:
-            pass
 
 
 
@@ -585,7 +583,7 @@ def parse_and_graph():
 
 
 
-        elif 'test' in msn_check.lower():
+        else:
             test_main_info = MainInfoParser(file,test_dates,test_starttimes,test_subjects,test_msns,test_experiments)
             test_main_info.maininfograbber()
 
@@ -666,8 +664,6 @@ def parse_and_graph():
                     itrr.append(available_increments[i]/((trial_timestamps[i] -trial_timestamps[i-1] - 10)/60))
             all_itrr.append(itrr)
 
-        else:
-            pass
 
 
 
