@@ -398,7 +398,7 @@ def parse():
                 if i == 0:
                     itrr.append(available_increments[i]/((trial_timestamps[i]-1)/60))
                 else:
-                    itrr.append(available_increments[i]/((trial_timestamps[i] -trial_timestamps[i-1] - 10)/60))
+                    itrr.append(available_increments[i]/((trial_timestamps[i] -trial_timestamps[i-1] - 5)/60))
             all_itrr.append(itrr)
 
 
@@ -616,7 +616,7 @@ def parse_and_graph():
                 if i == 0:
                     itrr.append(available_increments[i]/((trial_timestamps[i]-1)/60))
                 else:
-                    itrr.append(available_increments[i]/((trial_timestamps[i] -trial_timestamps[i-1] - 10)/60))
+                    itrr.append(available_increments[i]/((trial_timestamps[i] -trial_timestamps[i-1] - 5)/60))
             all_itrr.append(itrr)
 
 
