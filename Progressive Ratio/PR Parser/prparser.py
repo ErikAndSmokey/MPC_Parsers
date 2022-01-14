@@ -314,7 +314,7 @@ def parse():
         print(i)
         file = path_to_last + i
         msn_check = MainInfoParser.msngrabber(file)
-        if 'food' in msn_check.lower():
+        if 'food' in msn_check.lower() or 'FR5' in msn_check.upper() or 'FR1' in msn_check.upper():
             main_info = MainInfoParser(file,dates,starttimes,subjects,msn,experiment)
             main_info.maininfograbber()
             total_presses_temp = []
