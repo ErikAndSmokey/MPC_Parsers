@@ -244,6 +244,38 @@ def summary_graphs(df):
 
     plt.savefig(path_to_figures + f'PR Graphs from {date.today()}.png', dpi = 300)
 
+def avg_itrr_graph(df):
+    df_indiv = test_df.explode('All ITRR')
+    df_indiv['ITRR (resp/min)'] = df_indiv['All ITRR'].astype('float')
+    set_o_subs = list(set(df_indiv.index))
+    day_nums = list(set(df_indiv['Day Number']))
+
+    trial = []
+    for i,x in df_indiv.groupby(['Subject','Day Number']):
+        holder = [i for i in range(1,len(x)+1,1)]
+        trial.extend(i for i in holder)
+
+    df_indiv['IDI'] = trial
+
+    x = round(np.sqrt(len(set_o_subs)))
+    y = round(np.sqrt(len(set_o_subs)))
+
+
+    fig,axes = plt.subplots(x,y, figsize = (24,36))
+    a=0
+    b=0
+    for i,x in enumerate(set_o_subs):
+        for_test = df_indiv[df_indiv.index == x]
+        sns.lineplot(x = 'IDI', y = 'ITRR (resp/min)', data = for_test.groupby('IDI').mean(), ax= axes[a,b])
+        axes[a,b].set_title(x)
+        if b >= y-1:
+            a+=1
+            b = 0
+        else:
+            b += 1
+
+
+    plt.savefig(path_to_figures + f'Avg Resp Rate X Trial from {date.today()}.png', dpi= 300)
 
 
 
@@ -732,9 +764,11 @@ def parse_and_graph():
     summary_graphs(df = test_df)
     individ_rr_graphs(df = test_df)
     summary_by_day_graphs(df = test_df)
-    
+    avg_itrr_graph(df=test_df)
     the_dots_graph(test_subjects = test_subjects, 
             test_cts = test_cts, 
             test_its = test_its, 
             test_trial_finishes = test_trial_finishes,
             test_max_time = test_max_time)
+
+
