@@ -244,7 +244,7 @@ def summary_graphs(df):
 
 
 def avg_itrr_graph(df):
-    df_indiv = test_df.explode('All ITRR')
+    df_indiv = df.explode('All ITRR')
     df_indiv['ITRR (resp/min)'] = df_indiv['All ITRR'].astype('float')
     set_o_subs = list(set(df_indiv.index))
     day_nums = list(set(df_indiv['Day Number']))

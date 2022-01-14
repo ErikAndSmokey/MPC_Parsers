@@ -245,7 +245,7 @@ def summary_graphs(df):
     plt.savefig(path_to_figures + f'PR Graphs from {date.today()}.png', dpi = 300)
 
 def avg_itrr_graph(df):
-    df_indiv = test_df.explode('All ITRR')
+    df_indiv = df.explode('All ITRR')
     df_indiv['ITRR (resp/min)'] = df_indiv['All ITRR'].astype('float')
     set_o_subs = list(set(df_indiv.index))
     day_nums = list(set(df_indiv['Day Number']))
