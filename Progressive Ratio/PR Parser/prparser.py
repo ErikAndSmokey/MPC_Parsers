@@ -277,6 +277,24 @@ def avg_itrr_graph(df):
 
     plt.savefig(path_to_figures + f'Avg Resp Rate X Trial from {date.today()}.png', dpi= 300)
 
+def group_itrr_graph(df):
+    df_indiv = df.explode('All ITRR')
+    df_indiv['ITRR (resp/min)'] = df_indiv['All ITRR'].astype('float')
+
+    trial = []
+    for i,x in df_indiv.groupby(['Subject','Day Number']):
+        holder = [i for i in range(1,len(x)+1,1)]
+        trial.extend(i for i in holder)
+
+    df_indiv['IDI'] = trial
+
+    plt.figure(figsize=(24,24))
+
+    sns.lineplot(x = 'IDI', y = 'ITRR (resp/min)', data = df_indiv, hue = 'Group', err_style='band')
+
+
+    plt.savefig(path_to_figures + f'Group Resp Rate X Trial from {date.today()}.png', dpi= 300)   
+
 
 
 
@@ -341,12 +359,18 @@ def parse():
                     pass
 
 
+    msn_df = pd.ExcelFile(main_folder + '\\Group Identifier.xlsx').parse()
+    training_msns_header = msn_df.keys()[2]
+    test_msns_header = msn_df.keys()[3]
+    listoftraining = [str(i).upper() for i in msn_df[training_msns_header]]
+    listoftests = [str(i).upper() for i in msn_df[test_msns_header]]
+
 
     for i in os.listdir(path_to_last):
         print(i)
         file = path_to_last + i
         msn_check = MainInfoParser.msngrabber(file)
-        if 'food' in msn_check.lower() or 'FR5' in msn_check.upper() or 'FR1' in msn_check.upper():
+        if msn_check.upper() in listoftraining:
             main_info = MainInfoParser(file,dates,starttimes,subjects,msn,experiment)
             main_info.maininfograbber()
             total_presses_temp = []
@@ -375,7 +399,7 @@ def parse():
 
 
 
-        else:
+        elif msn_check.upper() in listoftests:
             test_main_info = MainInfoParser(file,test_dates,test_starttimes,test_subjects,test_msns,test_experiments)
             test_main_info.maininfograbber()
 
@@ -580,13 +604,17 @@ def parse_and_graph():
                 else:
                     pass
 
-
+    msn_df = pd.ExcelFile(main_folder + '\\Group Identifier.xlsx').parse()
+    training_msns_header = msn_df.keys()[2]
+    test_msns_header = msn_df.keys()[3]
+    listoftraining = [str(i).upper() for i in msn_df[training_msns_header]]
+    listoftests = [str(i).upper() for i in msn_df[test_msns_header]]
 
     for i in os.listdir(path_to_last):
         print(i)
         file = path_to_data + i
         msn_check = MainInfoParser.msngrabber(file)
-        if 'food' in msn_check.lower():
+        if msn_check.upper() in listoftraining:
             main_info = MainInfoParser(file,dates,starttimes,subjects,msn,experiment)
             main_info.maininfograbber()
             total_presses_temp = []
@@ -615,7 +643,7 @@ def parse_and_graph():
 
 
 
-        else:
+        elif msn_check.upper() in listoftests:
             test_main_info = MainInfoParser(file,test_dates,test_starttimes,test_subjects,test_msns,test_experiments)
             test_main_info.maininfograbber()
 
@@ -765,6 +793,7 @@ def parse_and_graph():
     individ_rr_graphs(df = test_df)
     summary_by_day_graphs(df = test_df)
     avg_itrr_graph(df=test_df)
+    group_itrr_graph(df = test_df)
     the_dots_graph(test_subjects = test_subjects, 
             test_cts = test_cts, 
             test_its = test_its, 
