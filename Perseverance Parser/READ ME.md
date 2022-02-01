@@ -2,7 +2,7 @@
 
 Here's how to use the parser:
 
-1) Download the .py file and .bat files
+1) Download the .py file and .bat files located in the 'Parser' folder.
 
 2) Put all the parser files in the same root folder (ex. 'C:\Users\JoeSchmo\Desktop\Set Shift')
 
