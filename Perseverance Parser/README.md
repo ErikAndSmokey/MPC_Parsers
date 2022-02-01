@@ -4,7 +4,7 @@ Here's how to use the parser:
 
 1) Download the .py file and .bat files located in the 'Parser' folder.
 
-2) Put all the parser files in the same root folder (ex. 'C:\Users\JoeSchmo\Desktop\Set Shift')
+2) Put all the parser files in the same root folder (ex. 'C:\Users\JoeSchmo\Desktop\Perseverance Parser')
 
 3) Run the .bat file ('Make Folders') by double-clicking. This will create the folders in the directory that are necessary for the program.
 
