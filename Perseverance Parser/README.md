@@ -1,4 +1,4 @@
-***Welcome to the Attentional Set Shift Parser folder!***
+***Welcome to the Attentional Perseverance Parser folder!***
 
 Here's how to use the parser:
 
