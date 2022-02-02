@@ -183,7 +183,7 @@ for i in os.listdir(data_folder):
     file = data_folder+ f'{i}'
     test = Analyze(file, dates, starttimes, subjects, msns, paradigms)
     test.maininfograbber()
-    if 'food' in msns[-1].lower() or 'drug' in msns[-1].lower():
+    if 'perseverance' in msns[-1].lower():
         
         #Get all of the general shit out of the way
         temper = []
@@ -287,6 +287,8 @@ for i in os.listdir(data_folder):
         fd_p3_tot.append(rl_p3 + ll_p3)
         fd_p4_tot.append(rl_p4 + ll_p4)
         fd_p5_tot.append(rl_p5 + ll_p5)
+    else:
+        pass
         
         
         
