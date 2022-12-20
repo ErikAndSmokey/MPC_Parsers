@@ -5,7 +5,6 @@ import pandas as pd
 import numpy as np
 from datetime import date
 from shutil import copyfile
-import Emailer
 import matplotlib.pyplot as plt
 
 #Set your operating directory here
